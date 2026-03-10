@@ -17,6 +17,7 @@ function AdminDashboardPage() {
   const [form, setForm] = useState(initialForm);
   const [images, setImages] = useState([]);
   const [editingId, setEditingId] = useState("");
+  const [activeTab, setActiveTab] = useState("products");
 
   const loadAll = async () => {
     const [productsRes, ordersRes] = await Promise.all([api.get("/products"), api.get("/orders")]);
@@ -133,7 +134,7 @@ function AdminDashboardPage() {
             value={form.name}
             onChange={onChange}
             placeholder="Product Name"
-            className="rounded-lg border border-roseGold/30 px-3 py-2"
+            className="rounded-lg border border-roseGold/30 px-3 py-3"
           />
           <input
             required
@@ -142,13 +143,13 @@ function AdminDashboardPage() {
             value={form.price}
             onChange={onChange}
             placeholder="Price"
-            className="rounded-lg border border-roseGold/30 px-3 py-2"
+            className="rounded-lg border border-roseGold/30 px-3 py-3"
           />
           <select
             name="category"
             value={form.category}
             onChange={onChange}
-            className="rounded-lg border border-roseGold/30 px-3 py-2"
+            className="rounded-lg border border-roseGold/30 px-3 py-3"
           >
             <option value="resin-art">Resin Art</option>
             <option value="resin-jewellery">Resin Jewellery</option>
@@ -159,7 +160,7 @@ function AdminDashboardPage() {
             value={form.material}
             onChange={onChange}
             placeholder="Material"
-            className="rounded-lg border border-roseGold/30 px-3 py-2"
+            className="rounded-lg border border-roseGold/30 px-3 py-3"
           />
           <input
             type="number"
@@ -167,14 +168,14 @@ function AdminDashboardPage() {
             value={form.stock}
             onChange={onChange}
             placeholder="Stock"
-            className="rounded-lg border border-roseGold/30 px-3 py-2"
+            className="rounded-lg border border-roseGold/30 px-3 py-3"
           />
           <input
             name="sizes"
             value={form.sizes}
             onChange={onChange}
             placeholder="Sizes (comma separated)"
-            className="rounded-lg border border-roseGold/30 px-3 py-2"
+            className="rounded-lg border border-roseGold/30 px-3 py-3"
           />
           <textarea
             required
@@ -183,7 +184,7 @@ function AdminDashboardPage() {
             onChange={onChange}
             placeholder="Description"
             rows="3"
-            className="md:col-span-2 rounded-lg border border-roseGold/30 px-3 py-2"
+            className="md:col-span-2 rounded-lg border border-roseGold/30 px-3 py-3"
           />
           <input
             type="file"
@@ -198,13 +199,36 @@ function AdminDashboardPage() {
         </form>
       </section>
 
-      <section className="rounded-2xl border border-roseGold/20 bg-white p-6">
+      <div className="flex gap-2 sm:hidden">
+        <button
+          onClick={() => setActiveTab("products")}
+          className={`flex-1 rounded-full border px-4 py-2 text-sm ${
+            activeTab === "products" ? "border-roseGold bg-roseGold text-cream" : "border-roseGold/30"
+          }`}
+        >
+          Products
+        </button>
+        <button
+          onClick={() => setActiveTab("orders")}
+          className={`flex-1 rounded-full border px-4 py-2 text-sm ${
+            activeTab === "orders" ? "border-roseGold bg-roseGold text-cream" : "border-roseGold/30"
+          }`}
+        >
+          Orders
+        </button>
+      </div>
+
+      <section
+        className={`rounded-2xl border border-roseGold/20 bg-white p-6 ${
+          activeTab !== "products" ? "hidden sm:block" : ""
+        }`}
+      >
         <h2 className="font-heading text-3xl">Products</h2>
         <div className="mt-4 space-y-3">
           {products.map((product) => (
             <article
               key={product._id}
-              className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-roseGold/20 p-3"
+              className="flex flex-col gap-3 rounded-xl border border-roseGold/20 p-3 sm:flex-row sm:items-center sm:justify-between"
             >
               <div className="flex items-center gap-3">
                 <img src={product.images[0]} alt={product.name} className="h-16 w-16 rounded-lg object-cover" />
@@ -216,12 +240,12 @@ function AdminDashboardPage() {
                 </div>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => onEdit(product)} className="rounded border px-3 py-1 text-sm">
+                <button onClick={() => onEdit(product)} className="rounded border px-3 py-2 text-sm">
                   Edit
                 </button>
                 <button
                   onClick={() => onDelete(product._id)}
-                  className="rounded border border-red-600 px-3 py-1 text-sm text-red-600"
+                  className="rounded border border-red-600 px-3 py-2 text-sm text-red-600"
                 >
                   Delete
                 </button>
@@ -231,7 +255,11 @@ function AdminDashboardPage() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-roseGold/20 bg-white p-6">
+      <section
+        className={`rounded-2xl border border-roseGold/20 bg-white p-6 ${
+          activeTab !== "orders" ? "hidden sm:block" : ""
+        }`}
+      >
         <h2 className="font-heading text-3xl">Orders</h2>
         <div className="mt-4 space-y-3">
           {orders.map((order) => (

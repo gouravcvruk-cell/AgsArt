@@ -105,3 +105,11 @@ When using Razorpay mode, set:
 ## Notes
 - Keep `.env` files private; only `.env.example` should be committed.
 - If MongoDB is local, ensure service is running before starting server.
+
+## One-Click Deploy
+Render (backend):
+- Use `render.yaml` in the repo root for a Render Blueprint deploy.
+
+Vercel (frontend):
+- Use the `client/vercel.json` config.
+- Set Vercel Root Directory to `client` if prompted.
