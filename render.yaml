@@ -3,7 +3,7 @@ services:
     name: riddhiart-api
     env: node
     plan: free
-    rootDir: server
+    rootDir: RiddhiArt/server
     buildCommand: npm install
     startCommand: npm run start
     autoDeploy: true
